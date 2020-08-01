@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import PageDefault from '../../components/PageDefault';
 import FormField from '../../components/FormField';
 import Button from '../../components/button';
+import useForm from '../../hooks/useForm/useFrom';
 
 function NewCategory() {
   const initialValues = {
@@ -11,21 +12,11 @@ function NewCategory() {
     description: '',
     color: '',
   };
+  const { handleChange, values, clearForm } = useForm(initialValues);
   const [categories, setCategory] = useState([]);
-  const [values, setValues] = useState(initialValues);
 
-  function setValue(key, value) {
-    setValues({
-      ...values,
-      [key]: value,
-    });
-  }
-
-  function handleChange(e) {
-    setValue(e.target.getAttribute('name'), e.target.value);
-  }
   useEffect(() => {
-    const URL = window.location.href.indexOf('localhost') > 0 ? 'http://localhost:8080/categorias' : 'https://bakausflix.herokuapp.com/categorias';
+    const URL = window.location.href.indexOf('localhost') > 0 ? 'http://localhost:8080/categorias' : 'https://bakausflix.herokuapp.com/';
     fetch(URL)
       .then(async (respostaDoServer) => {
         if (respostaDoServer.ok) {
@@ -47,7 +38,7 @@ function NewCategory() {
           e.preventDefault();
           setCategory([...categories, values.name]);
 
-          setValues(initialValues);
+          clearForm();
         }}
       >
         <FormField
