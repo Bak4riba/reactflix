@@ -25,7 +25,7 @@ function NewCategory() {
     setValue(e.target.getAttribute('name'), e.target.value);
   }
   useEffect(() => {
-    const URL = 'https://bakausflix.herokuapp.com/categorias';
+    const URL = window.location.href.indexOf('localhost') > 0 ? 'http://localhost:8080/categorias' : 'https://bakausflix.herokuapp.com/categorias';
     fetch(URL)
       .then(async (respostaDoServer) => {
         if (respostaDoServer.ok) {
