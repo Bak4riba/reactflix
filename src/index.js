@@ -11,8 +11,8 @@ ReactDOM.render(
   <Router>
     <Switch>
       <Route path="/" component={App} exact />
-      <Route path="/new/video" component={NewVideo} exact />
-      <Route path="/new/category" component={NewCategory} exact />
+      <Route path="/1" component={NewVideo} exact />
+      <Route path="/2" component={NewCategory} exact />
       <Route component={NotFound}></Route>
     </Switch>
   </Router>,

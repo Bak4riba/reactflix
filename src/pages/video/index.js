@@ -12,9 +12,9 @@ function NewVideo() {
   const [categories, setCategories] = useState([]);
   const categoryTitles = categories.map(({ titulo }) => titulo);
   const { handleChange, values } = useForm({
-    titulo: 'Video padrão',
-    url: 'https://www.youtube.com/watch?v=jOAU81jdi-c',
-    categoria: 'Front End',
+    titulo: '',
+    url: '',
+    categoria: '',
   });
 
   useEffect(() => {
@@ -24,7 +24,11 @@ function NewVideo() {
         setCategories(categoriesFromServer);
       });
   }, []);
+  // eslint-disable-next-line spaced-comment
+  //=============================================================
 
+  // eslint-disable-next-line spaced-comment
+  //============================================================
   return (
 
     <PageDefault>
@@ -34,6 +38,8 @@ function NewVideo() {
 
       <form onSubmit={(e) => {
         e.preventDefault();
+        console.log(e.values);
+        // eslint-disable-next-line max-len
         const categoryChoosed = categories.find((categoria) => categoria.titulo === values.categoria);
         VideosRepository.create({
           titulo: values.titulo,
@@ -41,7 +47,6 @@ function NewVideo() {
           categoriaId: categoryChoosed.id,
         })
           .then(() => {
-            console.log('Cadastrado com sucesso');
             history.push('/');
           });
       }}
@@ -54,7 +59,7 @@ function NewVideo() {
           type="text"
         />
         <FormField
-          label="url do Video"
+          label="URL do video"
           value={values.url}
           onChange={handleChange}
           name="url"

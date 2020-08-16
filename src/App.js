@@ -4,7 +4,6 @@ import './App.css';
 import BannerMain from './components/BannerMain';
 import Carousel from './components/Carousel';
 import PageDefault from './components/PageDefault';
-// import dadosIniciais from './data/dados_iniciais.json';
 import categoriasRepository from './repositories/categorias';
 
 function App() {
@@ -12,10 +11,10 @@ function App() {
   useEffect(() => {
     categoriasRepository.getAllWithVideos()
       .then((categoriesWithVideos) => {
-        console.log(categoriesWithVideos);
         setDadosIniciais(categoriesWithVideos);
       })
       .catch((err) => {
+        // eslint-disable-next-line no-console
         console.log(err.message);
       });
   }, []);

@@ -1,22 +1,24 @@
-/* eslint-disable react/jsx-filename-extension */
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PageDefault from '../../components/PageDefault';
 import FormField from '../../components/FormField';
 import Button from '../../components/button';
 import useForm from '../../hooks/useForm/useFrom';
+import CategoryRepo from '../../repositories/categorias';
 
 function NewCategory() {
   const initialValues = {
-    name: '',
+    id: '',
+    titulo: '',
     description: '',
-    color: '',
+    color: '#000',
   };
   const { handleChange, values, clearForm } = useForm(initialValues);
   const [categories, setCategory] = useState([]);
+  const history = useHistory();
 
   useEffect(() => {
-    const URL = window.location.href.indexOf('localhost') > 0 ? 'http://localhost:8080/categorias' : 'https://bakausflix.herokuapp.com/';
+    const URL = window.location.href.indexOf('localhost') > 0 ? 'https://bakausflix.herokuapp.com/' : ''; // 'https://bakausflix.herokuapp.com/';
     fetch(URL)
       .then(async (respostaDoServer) => {
         if (respostaDoServer.ok) {
@@ -37,6 +39,14 @@ function NewCategory() {
         onSubmit={function handleSubmit(e) {
           e.preventDefault();
           setCategory([...categories, values.name]);
+          CategoryRepo.createCategory({
+            id: '',
+            descricao: values.description,
+            titulo: values.name,
+            cor: values.color,
+          }).then(() => {
+            history.push('/');
+          });
 
           clearForm();
         }}
@@ -47,6 +57,7 @@ function NewCategory() {
           onChange={handleChange}
           name="name"
           type="text"
+
         />
 
         <FormField
@@ -64,15 +75,29 @@ function NewCategory() {
           onChange={handleChange}
         />
 
-        <Button>Cadastrar</Button>
+        <Button>Salvar</Button>
+
       </form>
-      <ul>
-        {categories.map((category) => (
-          <li key={`${category.id}`}>
-            {category.titulo}
-          </li>
-        ))}
-      </ul>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>Titulo</th>
+            <th>Descrição</th>
+            <th>Cor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categories.map((category) => (
+            <tr key={`${category.id}`}>
+              <td>{category.titulo}</td>
+              <td>{category.descricao}</td>
+              <td>{category.cor}</td>
+            </tr>
+
+          ))}
+        </tbody>
+      </table>
+
       <Link to="/">Home</Link>
     </PageDefault>
   );
